@@ -25,6 +25,7 @@ import blade.kit.Assert;
 import blade.kit.IOKit;
 import blade.kit.PropertyKit;
 import blade.kit.json.JSONKit;
+import blade.kit.json.JsonObject;
 
 import com.blade.ioc.Container;
 import com.blade.ioc.SampleContainer;
@@ -550,6 +551,32 @@ public class Blade {
     }
     
     /**
+     * Setting Favicon
+     * cache maxAge = 1 year (Default)
+     * 
+     * @param favicon	Favicon Path
+     * @return			return blade
+     */
+    public Blade setFavicon(final String path){
+    	Assert.notBlank(path);
+    	config.setFavicon(path);
+    	return this;
+    }
+    
+    /**
+     * Setting Favicon with cache maxAge
+     * 
+     * @param favicon	Favicon Path
+     * @param maxAge    Cache maxAge
+     * @return			return blade
+     */
+    public Blade setFavicon(final String favicon, final int maxAge){
+    	Assert.notBlank(favicon);
+    	config.setFavicon(favicon,maxAge);
+    	return this;
+    }
+    
+    /**
      * Setting 404 view page
      * 
      * @param view404	404 view page
@@ -714,6 +741,13 @@ public class Blade {
      */
     public String viewSuffix(){
     	return config.getViewSuffix();
+    }
+    
+    /**
+     * @return	Return Favicon Path
+     */
+    public JsonObject viewFavicon(){
+    	return config.getFavicon();
     }
     
     /**

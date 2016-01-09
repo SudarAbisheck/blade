@@ -21,6 +21,7 @@ import java.util.Map;
 
 import blade.kit.CollectionKit;
 import blade.kit.PatternKit;
+import blade.kit.json.JsonObject;
 
 /**
  * Blade Config Class
@@ -60,6 +61,9 @@ public class Config {
 	
 	// web root path
 	private String webRoot;
+	
+	//Favicon
+	private JsonObject favicon = new JsonObject();
 	
 	// 404 view page
 	private String view404;
@@ -186,6 +190,29 @@ public class Config {
 	
 	public void setStaticFolders(String ... packages) {
 		staticFolders.addAll(Arrays.asList(packages));
+	}
+
+	/**
+	 * @return the favicon JsonObject
+	 */
+	public JsonObject getFavicon() {
+		return favicon;
+	}
+
+	/**
+	 * @param path   favicon path to set
+	 */
+	public void setFavicon(String path) {
+		this.favicon.add("path",path);
+	}
+	
+	/**
+	 * @param path   favicon path to set
+	 * @param maxAge  cache maxAge
+	 */
+	public void setFavicon(String path, int maxAge) {
+		this.favicon.add("path",path);
+		this.favicon.add("maxAge", maxAge);
 	}
 
 	public String getView404() {

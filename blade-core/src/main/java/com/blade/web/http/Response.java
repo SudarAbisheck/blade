@@ -21,6 +21,8 @@ import java.io.OutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import blade.kit.json.JsonObject;
+
 import com.blade.render.ModelAndView;
 
 /**
@@ -158,13 +160,21 @@ public interface Response {
 	Response removeCookie(Cookie cookie);
 	
 	/**
-	 * Rmove Cookie By Name
+	 * Remove Cookie By Name
 	 * 
 	 * @param name		Cookie Name
 	 * @return			Return Response
 	 */
 	Response removeCookie(String name);
 
+	/**
+	 * Favicon Response
+	 * 
+	 * @param output	Favicon file
+	 * @return			Return Response
+	 */
+	Response favicon(JsonObject favicon);
+	
 	/**
 	 * Render by text
 	 * 
@@ -174,25 +184,25 @@ public interface Response {
 	Response text(String output);
 	
 	/**
-	 * Render by html
+	 * Render by HTML
 	 * 
-	 * @param output	html content
+	 * @param output	HTML content
 	 * @return			Return Response
 	 */
 	Response html(String output);
 	
 	/**
-	 * Render by json
+	 * Render by JSON
 	 * 
-	 * @param output	json content
+	 * @param output	JSON content
 	 * @return			Return Response
 	 */
 	Response json(String output);
 	
 	/**
-	 * Render by xml
+	 * Render by XML
 	 * 
-	 * @param output	xml content
+	 * @param output	XML content
 	 * @return			Return Response
 	 */
 	Response xml(String output);

@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import blade.kit.StringKit;
 import blade.kit.base.ThrowableKit;
+import blade.kit.json.JsonObject;
 import blade.kit.log.Logger;
 
 import com.blade.Blade;
@@ -104,6 +105,13 @@ public class AsynRequestHandler implements Runnable {
          	
 			Route route = routeMatcher.getRoute(method, uri);
 			
+			//handling favicon request : GET /favicon.ico
+			if(uri.equals("/favicon.ico") && method.equals("GET")){
+				serveFavicon(response, uri);
+				asyncContext.complete();
+				return;
+			}
+			
 			// If find it
 			if (route != null) {
 				request.setRoute(route);
@@ -141,7 +149,22 @@ public class AsynRequestHandler implements Runnable {
         asyncContext.complete();
         return;
 	}
-	
+		
+	/**
+	 * Method to serve the Favicon file
+	 * 
+	 * @param response	response object
+	 * @param uri	faviconUri
+	 */
+	private void serveFavicon(Response response, String uri){
+		JsonObject favicon = blade.viewFavicon();
+		if(StringKit.isNotBlank(favicon.getString("path"))){
+			response.favicon(favicon);
+		} else {
+    		response.status(HttpStatus.NOT_FOUND);
+		}
+	}
+
 	/**
 	 * 404 view render
 	 * 

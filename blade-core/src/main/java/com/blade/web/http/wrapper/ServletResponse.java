@@ -15,15 +15,19 @@
  */
 package com.blade.web.http.wrapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import blade.kit.Assert;
+import blade.kit.json.JsonObject;
+import blade.kit.log.Logger;
 
 import com.blade.Blade;
 import com.blade.context.BladeWebContext;
@@ -42,7 +46,7 @@ import com.blade.web.http.Response;
  * @since	1.0
  */
 public class ServletResponse implements Response {
-
+	
 	private HttpServletResponse response;
 	
 	private boolean written = false;
@@ -178,6 +182,31 @@ public class ServletResponse implements Response {
 		return this;
 	}
 
+	@Override
+	public Response favicon(JsonObject favicon){
+		
+		int maxAgeDef = 60 * 60 * 24 * 365 * 1000; // 1 year
+		String path = favicon.getString("path");
+		int maxAge = favicon.getInt("maxAge", maxAgeDef);
+		
+		try{
+			File file = new File(path);
+			if(file.exists() && !file.isDirectory()){
+				
+				response.setHeader("Content-Type", "image/x-icon");
+				response.setHeader("Cache-Control", "public, max-age=" + Math.floor(maxAge/1000));
+		        response.setHeader("Content-Length", String.valueOf(file.length()));
+//		        response.setHeader("Content-Disposition", "inline; filename=\"" + file.getName() + "\"");
+		        Files.copy(file.toPath(), response.getOutputStream());
+			}else{
+				response.sendError(HttpStatus.NOT_FOUND);
+			}
+			return this;
+		}
+		catch (IOException e){
+			throw new HttpException(e);
+		}
+	}
 
 	@Override
 	public Response text(String text) {
