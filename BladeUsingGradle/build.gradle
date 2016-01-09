@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+repositories{
+	mavenCentral()
+}
+
+dependencies{
+	compile 'com.bladejava:blade-core:1.5.0'
+	compile 'com.bladejava:blade-startup:1.0.1'
+
+}
+
+task run(type:JavaExec) {
+   main = 'me.sudar.blade.HelloWorld'
+   classpath = sourceSets.main.runtimeClasspath
+}
